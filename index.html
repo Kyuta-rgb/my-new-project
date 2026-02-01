@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>For Nelly — From Me</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    * { box-sizing: border-box; scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      font-family: "Georgia", serif;
+      background: radial-gradient(circle at top, #0b1d3a, #120b24, #1a0f1f);
+      color: #f6f6f6;
+      overflow-x: hidden;
+    }
+
+    header {
+      min-height: 100vh;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 40px;
+      background: linear-gradient(145deg, #0b3c5d, #1b1b3a, #3a0f2e);
+    }
+
+    canvas {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+    }
+
+    header .content {
+      position: relative;
+      z-index: 2;
+      max-width: 850px;
+    }
+
+    header h1 {
+      font-size: 3.2rem;
+      letter-spacing: 2px;
+      font-weight: normal;
+      margin-bottom: 25px;
+    }
+
+    header p {
+      font-size: 1.25rem;
+      line-height: 2;
+      opacity: 0.95;
+      min-height: 10em;
+    }
+
+    section {
+      padding: 110px 10%;
+      opacity: 0;
+      transform: translateY(40px);
+      transition: all 1.2s ease;
+    }
+
+    section.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    h2 {
+      font-size: 2.3rem;
+      color: #9fd3ff;
+      font-weight: normal;
+      margin-bottom: 40px;
+    }
+
+    p {
+      font-size: 1.12rem;
+      line-height: 2.1;
+      margin-bottom: 35px;
+    }
+
+    .code {
+      background: rgba(255,255,255,0.06);
+      padding: 25px;
+      border-left: 4px solid #9fd3ff;
+      font-family: "Courier New", monospace;
+      margin: 40px 0;
+      line-height: 1.7;
+    }
+
+    .heart {
+      text-align: center;
+      font-size: 2.6rem;
+      margin: 60px 0;
+      animation: pulse 2s infinite;
+    }
+
+    button {
+      display: block;
+      margin: 60px auto 0;
+      padding: 18px 42px;
+      border-radius: 40px;
+      border: none;
+      background: linear-gradient(135deg, #ff6f91, #845ec2);
+      color: white;
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+    }
+
+    button:hover { transform: scale(1.1); }
+
+    .final {
+      text-align: center;
+      font-size: 1.25rem;
+      font-style: italic;
+      margin-top: 45px;
+      opacity: 0;
+      transition: opacity 1.5s ease;
+    }
+
+    .final.show { opacity: 1; }
+
+    footer {
+      text-align: center;
+      padding: 45px;
+      font-size: 0.9rem;
+      opacity: 0.6;
+    }
+
+    @keyframes pulse {
+      0%,100%{transform:scale(1)}
+      50%{transform:scale(1.2)}
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <canvas id="heartCanvas"></canvas>
+  <div class="content">
+    <h1>Nelly.</h1>
+    <p id="typeText"></p>
+  </div>
+</header>
+
+<section>
+  <h2>How I Feel About You</h2>
+
+  <p>
+    You are my favorite person in the world, and that truth did not disappear when things became complicated between us.
+    It stayed through the confusion, through the quiet, through the moments where I questioned myself.
+    I think of you when my days slow down and when they rush past me.
+    I carry your presence into rooms you’ve never stepped into.
+    Sometimes it feels like my thoughts naturally drift toward you.
+    Like gravity pulling them back.
+    Like familiarity wrapped in longing.
+    Loving you has never felt accidental.
+  </p>
+
+  <p>
+    There is a softness in how I hold you in my heart, even now.
+    Not possession, not pressure, just care.
+    I want your happiness even when it scares me.
+    I want your peace even if it costs me patience.
+    You matter to me beyond circumstances.
+    Beyond misunderstandings.
+    Beyond timing.
+    And that is something I cannot pretend away.
+  </p>
+</section>
+
+<section>
+  <h2>My Coder, My Curiosity</h2>
+
+  <p>
+    You see the world like a system waiting to be understood.
+    You trace logic where others surrender to chaos.
+    Watching you think feels like watching intention become form.
+    I imagine us coding together, learning side by side.
+    Sharing silence that feels full instead of empty.
+    Fixing bugs, breaking things, laughing at small victories.
+    Building not just projects, but rhythm.
+    Turning curiosity into connection.
+  </p>
+
+  <p>
+    I don’t just admire your skill, I admire your patience.
+    The way you persist until things make sense.
+    I want to learn with you, not behind you.
+    I want to grow in the same direction.
+    To debug not only code, but miscommunication.
+    To version-control our mistakes.
+    To push updates gently.
+    To build something that lasts.
+  </p>
+
+  <div class="code">
+    while (us.exists) {<br>
+    &nbsp;&nbsp;listen();<br>
+    &nbsp;&nbsp;learn();<br>
+    &nbsp;&nbsp;chooseYouAgain();<br>
+    }
+  </div>
+</section>
+
+<section>
+  <h2>Pour Toi, Ma Douce Professeure</h2>
+
+  <p>
+    Tu es brillante d’une manière qui apaise.
+    Ta façon de parler me donne envie d’écouter.
+    J’apprends le français avec l’espoir silencieux que tu seras ma guide.
+    Que tu corrigeras mes erreurs sans me faire honte.
+    Que tu souriras quand je chercherai mes mots.
+    Chaque phrase apprise me rapproche un peu plus de toi.
+    J’aime l’idée d’apprendre lentement.
+    Surtout si c’est avec toi.
+  </p>
+
+  <p>
+    Peut-être qu’un jour tu m’enseigneras plus que des mots.
+    Peut-être que tu m’apprendras la patience.
+    La douceur.
+    La confiance.
+    Si je devais apprendre l’amour dans une langue,
+    j’aimerais que ce soit la tienne.
+    Parce qu’avec toi, même les silences ont du sens.
+    Et même les hésitations sont belles.
+  </p>
+</section>
+
+<section>
+  <h2>My Best Friend</h2>
+
+  <p>
+    Avant tout, tu es mon amie.
+    La personne à qui je pense quand quelque chose se passe.
+    Celle dont l’absence se remarque immédiatement.
+    Tu es mon point de référence.
+    Ma normalité.
+    Ma zone sûre.
+    Ton amitié est une valeur que je protège.
+    Même quand tout le reste est incertain.
+  </p>
+
+  <p>
+    Je te respecte profondément.
+    Je respecte tes peurs.
+    Tes doutes.
+    Tes silences.
+    Je ne te vois pas comme un rôle à remplir.
+    Mais comme une personne entière.
+    Et c’est précisément pour cela que je tiens tant à toi.
+    Parce que tu es toi.
+  </p>
+</section>
+
+<section>
+  <h2>My Lover, Maybe Someday</h2>
+
+  <p>
+    Je ne sais pas ce que nous deviendrons.
+    Je ne sais pas si le futur nous sera tendre.
+    Mais je sais ce que je ressens aujourd’hui.
+    Et ce sentiment est réel.
+    J’espère un jour sans barrières.
+    Sans murs invisibles.
+    Sans malentendus accumulés.
+    J’espère un jour simple.
+  </p>
+
+  <p>
+    L’amour vrai existe encore.
+    Je refuse de croire le contraire.
+    Je le vois dans la façon dont je pense à toi.
+    Dans la manière dont je te choisis encore.
+    Même sans garanties.
+    Même sans promesses.
+    Si un jour nos chemins se rejoignent à nouveau,
+    j’aimerais qu’ils se rejoignent pleinement.
+  </p>
+</section>
+
+<section>
+  <h2>This Is Not Begging</h2>
+
+  <p>
+    This is not me kneeling.
+    This is me standing where I’ve always stood.
+    Honest about what I feel.
+    Honest about what I want.
+    Choosing communication instead of distance.
+    Choosing effort instead of silence.
+    Choosing courage over pride.
+    Because some things deserve trying.
+  </p>
+
+  <p>
+    And if this sounds like begging to you,
+    then I am sorry for how it lands.
+    Not sorry for feeling.
+    Not sorry for loving.
+    But sorry if my hope feels heavy.
+    This is only an attempt.
+    To ask someone I deeply love to come back.
+    So we can face the problem together.
+  </p>
+</section>
+
+<div class="heart">❤️</div>
+
+<button onclick="revealFinal()">One last truth</button>
+
+<div id="final" class="final">
+  I love you, Nelly.<br>
+  I miss you, Pookie.<br>
+  I am still here.
+</div>
+
+<footer>
+  Written with truth.<br>
+  Sent with hope.
+</footer>
+
+<script>
+  const text = `Not a message written in panic.
+Not words thrown out of fear.
+Just me, steady and honest.
+Standing where I’ve always stood.
+Choosing you, even now.
+Because you deserve the truth.`;
+
+  let i = 0;
+  const target = document.getElementById("typeText");
+  function typeWriter() {
+    if (i < text.length) {
+      target.innerHTML += text.charAt(i);
+      i++;
+      setTimeout(typeWriter, 45);
+    }
+  }
+  typeWriter();
+
+  const sections = document.querySelectorAll("section");
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) entry.target.classList.add("visible");
+    });
+  }, { threshold: 0.2 });
+  sections.forEach(section => observer.observe(section));
+
+  function revealFinal() {
+    document.getElementById("final").classList.add("show");
+  }
+
+  const canvas = document.getElementById("heartCanvas");
+  const ctx = canvas.getContext("2d");
+  canvas.width = innerWidth;
+  canvas.height = innerHeight;
+
+  let particles = [];
+  function heart(t) {
+    return {
+      x: 16 * Math.sin(t) ** 3,
+      y: -(13 * Math.cos(t) - 5 * Math.cos(2*t) - 2 * Math.cos(3*t) - Math.cos(4*t))
+    };
+  }
+
+  for (let i = 0; i < 700; i++) {
+    const t = Math.random() * Math.PI * 2;
+    const p = heart(t);
+    particles.push({
+      x: canvas.width/2 + p.x*12,
+      y: canvas.height/2 + p.y*12,
+      r: Math.random()*2+1,
+      a: Math.random()
+    });
+  }
+
+  function draw() {
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    particles.forEach(p=>{
+      ctx.fillStyle=`rgba(255,170,210,${p.a})`;
+      ctx.beginPath();
+      ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+      ctx.fill();
+    });
+    requestAnimationFrame(draw);
+  }
+  draw();
+</script>
+
+</body>
+</html>
