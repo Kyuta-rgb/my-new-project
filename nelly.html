@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To Nelly - February 13, 2026</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Crimson+Text:ital,wght@0,400;0,700;1,400&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Montserrat:wght@300;400;700&family=Raleway:wght@300;400;600&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Crimson Text', serif;
+            background: linear-gradient(135deg, #0a0a1a 0%, #1a1a2e 100%);
+            color: #e0e0e0;
+            overflow-x: hidden;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        /* Particle canvas for background */
+        #particles-js {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: 1;
+        }
+
+        /* Envelope styling */
+        .envelope-container {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 10;
+            transition: all 1.5s ease;
+            cursor: pointer;
+            width: 400px;
+            height: 300px;
+        }
+
+        .envelope {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.5s;
+        }
+
+        .envelope:hover {
+            transform: scale(1.05);
+        }
+
+        .envelope-back {
+            position: absolute;
+            width: 0;
+            height: 0;
+            border-left: 200px solid transparent;
+            border-right: 200px solid transparent;
+            border-top: 150px solid #2c003e;
+            top: 0;
+            z-index: 3;
+        }
+
+        .envelope-front {
+            position: absolute;
+            width: 0;
+            height: 0;
+            border-left: 200px solid transparent;
+            border-right: 200px solid transparent;
+            border-bottom: 150px solid #4a0072;
+            top: 150px;
+            z-index: 4;
+            transform-origin: top;
+            transition: transform 0.8s ease;
+        }
+
+        .envelope-open .envelope-front {
+            transform: rotateX(180deg);
+        }
+
+        .envelope-flap {
+            position: absolute;
+            width: 0;
+            height: 0;
+            border-left: 200px solid transparent;
+            border-right: 200px solid transparent;
+            border-top: 150px solid #6a0080;
+            top: 0;
+            z-index: 5;
+            transform-origin: top;
+            transition: transform 0.8s ease;
+        }
+
+        .envelope-open .envelope-flap {
+            transform: rotateX(180deg);
+        }
+
+        .envelope-letter {
+            position: absolute;
+            width: 380px;
+            height: 280px;
+            background: #1a1a2e;
+            top: 10px;
+            left: 10px;
+            z-index: 2;
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            box-shadow: 0 0 15px rgba(138, 43, 226, 0.3);
+            border: 1px solid #6a0080;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .envelope-open .envelope-letter {
+            opacity: 1;
+        }
+
+        .envelope-text {
+            font-family: 'Dancing Script', cursive;
+            font-size: 1.8rem;
+            color: #e0b0ff;
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        .envelope-subtext {
+            font-size: 1rem;
+            color: #b39ddb;
+            text-align: center;
+            font-style: italic;
+        }
+
+        .seal {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            background: #8b0000;
+            border-radius: 50%;
+            top: 120px;
+            z-index: 6;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 0 10px rgba(139, 0, 0, 0.7);
+            transition: all 0.5s ease;
+        }
+
+        .seal i {
+            color: #ffcccb;
+            font-size: 1.5rem;
+        }
+
+        .envelope-open .seal {
+            transform: scale(0);
+            opacity: 0;
+        }
+
+        /* Letter content styling */
+        .letter-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 5;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 1s ease, visibility 1s;
+            padding: 40px 20px;
+            overflow-y: auto;
+        }
+
+        .letter-visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .letter-content {
+            max-width: 900px;
+            margin: 0 auto;
+            background: rgba(26, 26, 46, 0.95);
+            border-radius: 10px;
+            padding: 40px;
+            box-shadow: 0 0 30px rgba(138, 43, 226, 0.2);
+            border-left: 8px solid #8b0000;
+            position: relative;
+        }
+
+        .letter-content:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%238b0000' fill-opacity='0.05' fill-rule='evenodd'/%3E%3C/svg%3E");
+            opacity: 0.3;
+            z-index: -1;
+        }
+
+        .letter-header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #6a0080;
+        }
+
+        .letter-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.8rem;
+            color: #e0b0ff;
+            margin-bottom: 10px;
+            text-shadow: 0 0 10px rgba(224, 176, 255, 0.5);
+        }
+
+        .letter-subtitle {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.2rem;
+            color: #b39ddb;
+            font-style: italic;
+        }
+
+        .page {
+            margin-bottom: 60px;
+            padding: 30px;
+            border-radius: 8px;
+            position: relative;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 1s ease, transform 1s ease;
+        }
+
+        .page-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .page:nth-child(odd) {
+            background: rgba(42, 27, 61, 0.7);
+            border-right: 5px solid #6a0080;
+        }
+
+        .page:nth-child(even) {
+            background: rgba(27, 38, 59, 0.7);
+            border-left: 5px solid #8b0000;
+        }
+
+        .page-1 { font-family: 'Crimson Text', serif; }
+        .page-2 { font-family: 'Playfair Display', serif; }
+        .page-3 { font-family: 'Raleway', sans-serif; }
+        .page-4 { font-family: 'Montserrat', sans-serif; }
+        .page-5 { font-family: 'Crimson Text', serif; font-style: italic; }
+        .page-6 { font-family: 'Playfair Display', serif; font-style: italic; }
+        .page-7 { font-family: 'Raleway', sans-serif; font-weight: 600; }
+
+        .page-text {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            margin-bottom: 20px;
+            text-align: justify;
+        }
+
+        .page-text:last-child {
+            margin-bottom: 0;
+        }
+
+        .page-number {
+            position: absolute;
+            bottom: -25px;
+            right: 20px;
+            font-size: 1rem;
+            color: #8b0000;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+        }
+
+        .broken-heart {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 80px;
+            height: 80px;
+            z-index: 3;
+            opacity: 0.7;
+        }
+
+        .heart-piece {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            background: #8b0000;
+            transform: rotate(45deg);
+        }
+
+        .heart-piece:before,
+        .heart-piece:after {
+            content: '';
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            background: #8b0000;
+            border-radius: 50%;
+        }
+
+        .heart-piece:before {
+            top: -20px;
+            left: 0;
+        }
+
+        .heart-piece:after {
+            top: 0;
+            left: -20px;
+        }
+
+        .heart-piece-1 {
+            top: 0;
+            left: 0;
+            animation: float1 8s infinite ease-in-out;
+        }
+
+        .heart-piece-2 {
+            top: 0;
+            left: 40px;
+            animation: float2 9s infinite ease-in-out;
+        }
+
+        .heart-piece-3 {
+            top: 40px;
+            left: 0;
+            animation: float3 10s infinite ease-in-out;
+        }
+
+        .heart-piece-4 {
+            top: 40px;
+            left: 40px;
+            animation: float4 7s infinite ease-in-out;
+        }
+
+        .bleeding-heart {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 120px;
+            height: 120px;
+            z-index: 2;
+        }
+
+        .heart-main {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            background: #8b0000;
+            transform: rotate(45deg);
+            top: 30px;
+            left: 30px;
+            animation: heartbeat 2s infinite;
+        }
+
+        .heart-main:before,
+        .heart-main:after {
+            content: '';
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            background: #8b0000;
+            border-radius: 50%;
+        }
+
+        .heart-main:before {
+            top: -30px;
+            left: 0;
+        }
+
+        .heart-main:after {
+            top: 0;
+            left: -30px;
+        }
+
+        .blood-drop {
+            position: absolute;
+            width: 15px;
+            height: 15px;
+            background: #8b0000;
+            border-radius: 50% 50% 50% 0;
+            transform: rotate(-45deg);
+            opacity: 0.8;
+        }
+
+        .drop-1 {
+            top: 90px;
+            left: 60px;
+            animation: drip 4s infinite linear;
+        }
+
+        .drop-2 {
+            top: 100px;
+            left: 45px;
+            animation: drip 5s infinite linear 0.5s;
+        }
+
+        .drop-3 {
+            top: 110px;
+            left: 75px;
+            animation: drip 4.5s infinite linear 1s;
+        }
+
+        .signature {
+            text-align: right;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #6a0080;
+            font-family: 'Dancing Script', cursive;
+            font-size: 2rem;
+            color: #e0b0ff;
+        }
+
+        .date {
+            text-align: right;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.2rem;
+            color: #b39ddb;
+            margin-top: 10px;
+        }
+
+        /* Animations */
+        @keyframes float1 {
+            0%, 100% { transform: rotate(45deg) translate(0, 0); }
+            50% { transform: rotate(45deg) translate(-10px, -15px); }
+        }
+
+        @keyframes float2 {
+            0%, 100% { transform: rotate(45deg) translate(0, 0); }
+            50% { transform: rotate(45deg) translate(10px, -10px); }
+        }
+
+        @keyframes float3 {
+            0%, 100% { transform: rotate(45deg) translate(0, 0); }
+            50% { transform: rotate(45deg) translate(-15px, 10px); }
+        }
+
+        @keyframes float4 {
+            0%, 100% { transform: rotate(45deg) translate(0, 0); }
+            50% { transform: rotate(45deg) translate(10px, 15px); }
+        }
+
+        @keyframes heartbeat {
+            0%, 100% { transform: rotate(45deg) scale(1); }
+            50% { transform: rotate(45deg) scale(1.1); }
+        }
+
+        @keyframes drip {
+            0% { transform: rotate(-45deg) translateY(0); opacity: 0.8; }
+            100% { transform: rotate(-45deg) translateY(100px); opacity: 0; }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .envelope-container {
+                width: 300px;
+                height: 225px;
+            }
+            
+            .envelope-back {
+                border-left: 150px solid transparent;
+                border-right: 150px solid transparent;
+                border-top: 112.5px solid #2c003e;
+            }
+            
+            .envelope-front {
+                border-left: 150px solid transparent;
+                border-right: 150px solid transparent;
+                border-bottom: 112.5px solid #4a0072;
+                top: 112.5px;
+            }
+            
+            .envelope-flap {
+                border-left: 150px solid transparent;
+                border-right: 150px solid transparent;
+                border-top: 112.5px solid #6a0080;
+            }
+            
+            .envelope-letter {
+                width: 280px;
+                height: 205px;
+                top: 10px;
+                left: 10px;
+            }
+            
+            .letter-content {
+                padding: 20px;
+            }
+            
+            .letter-title {
+                font-size: 2rem;
+            }
+            
+            .page {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Particle Background -->
+    <div id="particles-js"></div>
+    
+    <!-- Broken Heart -->
+    <div class="broken-heart">
+        <div class="heart-piece heart-piece-1"></div>
+        <div class="heart-piece heart-piece-2"></div>
+        <div class="heart-piece heart-piece-3"></div>
+        <div class="heart-piece heart-piece-4"></div>
+    </div>
+    
+    <!-- Bleeding Heart -->
+    <div class="bleeding-heart">
+        <div class="heart-main"></div>
+        <div class="blood-drop drop-1"></div>
+        <div class="blood-drop drop-2"></div>
+        <div class="blood-drop drop-3"></div>
+    </div>
+    
+    <!-- Envelope -->
+    <div class="envelope-container" id="envelope-container">
+        <div class="envelope" id="envelope">
+            <div class="envelope-back"></div>
+            <div class="envelope-letter">
+                <div class="envelope-text">To Nelly</div>
+                <div class="envelope-subtext">Click to open this letter</div>
+                <div class="envelope-subtext">After your exam on February 13, 2026</div>
+            </div>
+            <div class="envelope-front"></div>
+            <div class="envelope-flap"></div>
+            <div class="seal">
+                <i class="fas fa-heart"></i>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Letter Content -->
+    <div class="letter-container" id="letter-container">
+        <div class="letter-content">
+            <div class="letter-header">
+                <h1 class="letter-title">To Nelly</h1>
+                <div class="letter-subtitle">This is my daily thoughts for the last 7 days</div>
+            </div>
+            
+            <!-- Page 1 -->
+            <div class="page page-1" id="page-1">
+                <p class="page-text">Nelly, it's taken me a long time to gather the words for this. February 13, 2026—the day after our exam—is when I need us to talk. Face to face. No more texting, no more vague social media interactions, no more passing each other with awkward nods and half-smiles that mean nothing and everything simultaneously.</p>
+                <p class="page-text">You chose someone else. That decision carved a space in me that hasn't healed, not really. I've watched you move on while parts of me remain frozen in the moments before you made that choice. The more days that pass, the more I question my own sanity for holding on to something you've clearly released.</p>
+                <p class="page-text">I see you with him. I see the life you're building, and it's unsettling in ways I can't fully articulate without sounding pathetic or possessive—neither of which I want to be, but both of which I sometimes feel. You've become someone different, and not in the way people naturally evolve.</p>
+                <p class="page-text">There are things you said you'd never do—principles you held with conviction—that you've since abandoned. I know them. You know I know them. The specifics aren't for this page, but the erosion is visible from where I stand. It's like watching a lighthouse dim on a rocky shore, leaving everything dangerous and uncertain.</p>
+                <p class="page-text">I keep choosing to stay. Not in your life, not in the way I used to, but in this emotional limbo where your choices still affect me. It's a special kind of torture to care about someone who has moved you to the periphery of their world. You became my center, and I became your option.</p>
+                <div class="page-number">1</div>
+            </div>
+            
+            <!-- Page 2 -->
+            <div class="page page-2" id="page-2">
+                <p class="page-text">Frank was the beginning of the end, wasn't he? That talking stage you started while we were still together. You didn't just leave me; you ghosted me into non-existence. For a while, I didn't exist in your world at all. That silence was louder than any argument, more painful than any confrontation.</p>
+                <p class="page-text">You allowed me to vanish completely, and that hurt more than hell could ever design. Now there's Silva. The current boyfriend. The replacement who isn't just a rebound but a settled choice. And I'm here, enduring the particular agony of watching you with him.</p>
+                <p class="page-text">Silvers are already more expensive than gold. Remember when we used to joke about that? How silver tarnishes but gold endures? Well, Frank was the silver—flashy, temporary, reactive. But Silva? He's the gold now, apparently. The valuable one. The keeper. And what does that make me? The copper you once held but discarded for shinier metals.</p>
+                <p class="page-text">I see you living with him, sharing a room, a space, a life. It's unsettling. Not because I'm possessive, but because I remember the conversations we had about waiting, about principles, about what meant something. You've bleached those principles clean, washed out the color of your own convictions until they're just pale imitations of what they once were.</p>
+                <p class="page-text">We're supposed to be mature, right? Grown adults navigating complicated emotions. But some of the thoughts that cross my mind aren't mature at all. They're raw, unfiltered reactions to seeing you with him. I don't know if I'm supposed to be thinking these things, but I'm obligated to by this heart you once held.</p>
+                <div class="page-number">2</div>
+            </div>
+            
+            <!-- Page 3 -->
+            <div class="page page-3" id="page-3">
+                <p class="page-text">The fact that we need to talk isn't about rekindling what we had. That's probably a near-ashes by now, scattered in the wind of your new relationship. This is about closure—real closure, not the fake kind where we pretend everything's fine and go our separate ways with polite smiles.</p>
+                <p class="page-text">I want you to feel the urgency of this conversation. Not because I'm desperate, but because there are things that need to be said before they fester into something truly toxic. Before I become someone bitter, and you become someone who doesn't recognize the person she's becoming.</p>
+                <p class="page-text">You've changed, Nelly. Not just in the natural progression of life, but in fundamental ways that contradict who you told me you were. Who you told yourself you were. I'm not saying change is bad—we all evolve—but this feels like compromise, not growth. Like you're bending to fit a mold rather than expanding into your own shape.</p>
+                <p class="page-text">I keep questioning my sanity because part of me still cares. Still watches. Still hopes for some sign that you recognize what's happening. That's the pathetic part I hate—the part that hasn't fully accepted that I'm now a spectator in your life, not a participant.</p>
+                <p class="page-text">After our exam on the 13th, I need us to meet. Not for drama, not for tears, not for a scene. For honesty. The kind that strips away pretense and gets to the marrow of what happened between us and what's happening to you now.</p>
+                <div class="page-number">3</div>
+            </div>
+            
+            <!-- Page 4 -->
+            <div class="page page-4" id="page-4">
+                <p class="page-text">Let's be brutally frank for a moment: you hurt me. Not just with Frank, not just with Silva, but with the erosion of everything you claimed to value. It's not about jealousy—it's about integrity. Your integrity. The person I fell for had lines she wouldn't cross, boundaries that meant something.</p>
+                <p class="page-text">Watching you cross those lines has been more painful than the actual loss of our relationship. Because it makes me wonder if I ever really knew you at all. Or if you ever really knew yourself. Are you happy, Nelly? Truly, deeply happy? Or are you just comfortable? Just settled?</p>
+                <p class="page-text">Sometimes I look at you two together and I see a performance. Not for me—I don't think you even register my presence most of the time—but for yourselves. Like you're trying to convince each other that this is right, this is real, this is permanent.</p>
+                <p class="page-text">I don't want you back. That's the raw truth. The trust is too damaged, the wounds too deep. But I want you to be okay. Not just superficially okay, but fundamentally aligned with who you are. And from where I'm standing, that alignment is off. You're living with him, sharing a room, building a life that contradicts your own stated values.</p>
+                <p class="page-text">That's what unsettles me. Not the fact that you're with someone else, but that you're with someone else in a way that betrays your own principles. Principles you once voiced with such conviction that I admired you for them. Now they're just words you once said to someone who foolishly believed them.</p>
+                <div class="page-number">4</div>
+            </div>
+            
+            <!-- Page 5 -->
+            <div class="page page-5" id="page-5">
+                <p class="page-text">Here's what I know: the frank time with Frank nearly broke me. Not because you were interested in someone else, but because of how you handled it. The ghosting, the erasure, the complete dismissal of what we had. That wasn't just ending a relationship; that was denying it ever mattered.</p>
+                <p class="page-text">And now Silva—the gold that's supposed to be better, more valuable, more enduring. But from my vantage point, it just looks like another metal. Different composition, same dynamic. You, compromising. You, bending. You, becoming less of who you were to fit into someone else's life.</p>
+                <p class="page-text">I'm not writing this to win you back. I'm writing this because there are things that need to be said before I can fully let go. Before I can stop questioning my sanity for still caring about someone who moved on so completely. Before I can look at you without wondering what happened to the person I once knew.</p>
+                <p class="page-text">After our exam, let's meet. Let's have the conversation we've been avoiding. Not a confrontation, but a reckoning. A clear-eyed look at what was, what is, and what needs to be said so we can both move forward without these ghosts between us.</p>
+                <p class="page-text">I need you to understand the impact of your choices. Not to guilt you, but to acknowledge reality. You hurt me deeply. You changed in fundamental ways. And I've been stuck in the aftermath, trying to reconcile the person you were with the person you've become.</p>
+                <div class="page-number">5</div>
+            </div>
+            
+            <!-- Page 6 -->
+            <div class="page page-6" id="page-6">
+                <p class="page-text">This isn't about blame anymore. It's about understanding. I need to understand how you could discard what we had so completely. How you could abandon principles you once held sacred. How you could look at me now and see just another face in the crowd when you were once my entire landscape.</p>
+                <p class="page-text">Maybe you've justified it all to yourself. Maybe you've created a narrative where I was the problem, where our relationship was flawed beyond repair, where Frank and then Silva were necessary steps toward your happiness. Maybe that's even true from your perspective.</p>
+                <p class="page-text">But from mine, it looks different. It looks like you got scared. Of commitment, of depth, of something real. It looks like you traded substance for surface, depth for convenience. It looks like you're running from something within yourself, and these men are just stops along the way.</p>
+                <p class="page-text">I'm not saying this to be cruel. I'm saying it because I once knew you—or thought I did—and the person I knew wouldn't have made these choices. The person I knew had more integrity, more self-awareness, more courage than what you're displaying now.</p>
+                <p class="page-text">So after our exam on February 13th, let's talk. Not as exes, not as friends, not as anything with a label. Just as two people who shared something significant, who hurt each other, who need to say things that have been left unsaid for too long.</p>
+                <div class="page-number">6</div>
+            </div>
+            
+            <!-- Page 7 -->
+            <div class="page page-7" id="page-7">
+                <p class="page-text">This is the last thing I'd ever ask of you, Nelly. One conversation. Face to face. No phones, no distractions, no escape routes. Just honesty. The raw, unfiltered kind that might be uncomfortable but is necessary for us both to move on properly.</p>
+                <p class="page-text">I don't want to be your second option anymore. I don't want to be the person you think about when you're lonely or unhappy with your current choice. I don't want to be a backup plan. I want to be free of this, and I can't be until we have this talk.</p>
+                <p class="page-text">You need to understand what your choices have done. Not just to me, but to yourself. You've bleached your principles. You've compromised your values. You're living with a man in a way you once said you never would. And whether you admit it or not, that matters.</p>
+                <p class="page-text">So on February 13th, after our exam, meet me. Let's finally say what needs to be said. Let's acknowledge the hurt, the changes, the erosion of what we were and what you've become. Then we can we can be relieved off the pain, with nothing left unsaid, no ghosts between us.</p>
+                <p class="page-text">This isn't a plea. It's a necessity. For my sanity, for your integrity, for whatever remains of the genuine connection we once had. One conversation. That's all I'm asking. Then you can go back to your life with Silva, and I can finally be free.</p>
+                <div class="page-number">7</div>
+            </div>
+            
+            <div class="signature">I don't know what to call it but I still care about you Nelly</div>
+            <div class="date">Can't wait to see you on Wednesday</div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script>
+        // Initialize particles background
+        document.addEventListener('DOMContentLoaded', function() {
+            particlesJS("particles-js", {
+                particles: {
+                    number: { value: 80, density: { enable: true, value_area: 800 } },
+                    color: { value: "#8b0000" },
+                    shape: { type: "circle" },
+                    opacity: { value: 0.5, random: true },
+                    size: { value: 3, random: true },
+                    line_linked: {
+                        enable: true,
+                        distance: 150,
+                        color: "#6a0080",
+                        opacity: 0.4,
+                        width: 1
+                    },
+                    move: {
+                        enable: true,
+                        speed: 2,
+                        direction: "none",
+                        random: true,
+                        straight: false,
+                        out_mode: "out",
+                        bounce: false
+                    }
+                },
+                interactivity: {
+                    detect_on: "canvas",
+                    events: {
+                        onhover: { enable: true, mode: "repulse" },
+                        onclick: { enable: true, mode: "push" }
+                    }
+                },
+                retina_detect: true
+            });
+            
+            // Envelope click event
+            const envelope = document.getElementById('envelope');
+            const envelopeContainer = document.getElementById('envelope-container');
+            const letterContainer = document.getElementById('letter-container');
+            const pages = document.querySelectorAll('.page');
+            
+            envelope.addEventListener('click', function() {
+                // Open envelope
+                envelope.classList.add('envelope-open');
+                
+                // After a delay, hide envelope and show letter
+                setTimeout(() => {
+                    envelopeContainer.style.opacity = '0';
+                    envelopeContainer.style.visibility = 'hidden';
+                    
+                    letterContainer.classList.add('letter-visible');
+                    
+                    // Animate pages in one by one
+                    pages.forEach((page, index) => {
+                        setTimeout(() => {
+                            page.classList.add('page-visible');
+                        }, 300 * (index + 1));
+                    });
+                }, 1500);
+            });
+            
+            // Scroll animation for pages
+            function checkScroll() {
+                pages.forEach(page => {
+                    const rect = page.getBoundingClientRect();
+                    if (rect.top < window.innerHeight * 0.8) {
+                        page.classList.add('page-visible');
+                    }
+                });
+            }
+            
+            window.addEventListener('scroll', checkScroll);
+            checkScroll(); // Check initial state
+            
+            // Add some random blood drips for effect
+            const bleedingHeart = document.querySelector('.bleeding-heart');
+            for (let i = 0; i < 5; i++) {
+                setTimeout(() => {
+                    const drop = document.createElement('div');
+                    drop.className = 'blood-drop';
+                    drop.style.left = `${30 + Math.random() * 60}px`;
+                    drop.style.top = '90px';
+                    drop.style.animation = `drip ${3 + Math.random() * 4}s infinite linear ${Math.random() * 2}s`;
+                    bleedingHeart.appendChild(drop);
+                }, i * 1000);
+            }
+        });
+    </script>
+</body>
+</html>
